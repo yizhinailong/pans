@@ -14,7 +14,6 @@ export namespace pans::log::level {
         OFF,
     };
 
-    // Level 的枚举值连续，可直接作为下标，ToString 为 O(1)。
     inline constexpr std::array<std::string_view, 7> kNames{
         "TRACE",
         "DEBUG",
