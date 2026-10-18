@@ -67,7 +67,7 @@ AlignArrayOfStructures: Right
 #AlignConsecutiveAssignments 对齐连续赋值
 AlignConsecutiveAssignments:
   #是否启用 true/false
-  Enabled: true
+  Enabled: false
 
   #可以跨越空白行进行对齐
   AcrossEmptyLines: true
@@ -153,7 +153,7 @@ AlignConsecutiveBitFields:
 #—————————————————————————————————————8————————————————————————————————————————————————————#
 #连续声明对齐
 AlignConsecutiveDeclarations:
-  Enabled: true
+  Enabled: false
   AcrossEmptyLines: false
   AcrossComments: true
   #该属性未启用

@@ -3,18 +3,18 @@
 import std;
 import mutex;
 
-using u64               = std::uint64_t;
+using u64 = std::uint64_t;
 
-constexpr int RUNS      = 7;
-u64           g_Counter = 0;
-u64           g_target  = 0;
+constexpr int RUNS = 7;
+u64 g_Counter = 0;
+u64 g_target = 0;
 
 class AtomicFlagSpinLock {
 public:
-    AtomicFlagSpinLock() noexcept                            = default;
-    ~AtomicFlagSpinLock() noexcept                           = default;
+    AtomicFlagSpinLock() noexcept = default;
+    ~AtomicFlagSpinLock() noexcept = default;
 
-    AtomicFlagSpinLock(const AtomicFlagSpinLock&)            = delete;
+    AtomicFlagSpinLock(const AtomicFlagSpinLock&) = delete;
     AtomicFlagSpinLock& operator=(const AtomicFlagSpinLock&) = delete;
 
     auto lock() noexcept -> void {
@@ -39,12 +39,12 @@ private:
 
 class AtomicWaitLock {
 public:
-    using Lock                                       = std::lock_guard<AtomicWaitLock>;
+    using Lock = std::lock_guard<AtomicWaitLock>;
 
-    AtomicWaitLock() noexcept                        = default;
-    ~AtomicWaitLock() noexcept                       = default;
+    AtomicWaitLock() noexcept = default;
+    ~AtomicWaitLock() noexcept = default;
 
-    AtomicWaitLock(const AtomicWaitLock&)            = delete;
+    AtomicWaitLock(const AtomicWaitLock&) = delete;
     AtomicWaitLock& operator=(const AtomicWaitLock&) = delete;
 
     auto lock() noexcept -> void {
@@ -70,7 +70,7 @@ private:
 };
 
 auto OperationsForThread(std::size_t thread_index, std::size_t thread_count) -> u64 {
-    const u64 base      = g_target / thread_count;
+    const u64 base = g_target / thread_count;
     const u64 remainder = g_target % thread_count;
     return base + (thread_index < remainder ? 1 : 0);
 }
@@ -108,7 +108,7 @@ auto BenchmarkThreads(std::size_t thread_count, Operation&& operation) -> std::c
 template <typename Mutex>
 auto BenchmarkMutex(std::size_t thread_count) -> std::chrono::nanoseconds {
     Mutex mutex;
-    g_Counter          = 0;
+    g_Counter = 0;
 
     const auto elapsed = BenchmarkThreads(thread_count, [&mutex](std::size_t, u64 operations) {
         for (u64 index = 0; index < operations; ++index) {

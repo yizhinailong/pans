@@ -14,38 +14,33 @@ export namespace pans::log::level {
         OFF,
     };
 
-    std::unordered_map<std::string_view, Level> table{
-        {   "TRACE",   Level::TRACE },
-        {   "DEBUG",   Level::DEBUG },
-        {    "INFO",    Level::INFO },
-        { "WARNING", Level::WARNING },
-        {   "ERROR",   Level::ERROR },
-        {   "FATAL",   Level::FATAL },
-        {     "OFF",     Level::OFF },
+    // Level 的枚举值连续，可直接作为下标，ToString 为 O(1)。
+    inline constexpr std::array<std::string_view, 7> kNames{
+        "TRACE",
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "FATAL",
+        "OFF",
     };
 
+    static_assert(std::to_underlying(Level::OFF) + 1 == kNames.size());
+
     [[nodiscard]]
-    auto ToString(Level level) noexcept -> std::string_view {
-        for (const auto& [name, code] : table) {
-            if (level == code) {
-                return name;
-            }
-        }
-        return std::string_view{ "UNKNOW" };
+    constexpr auto ToString(Level level) noexcept -> std::string_view {
+        const auto index = std::to_underlying(level);
+        return index < kNames.size() ? kNames[index] : std::string_view{ "UNKNOWN" };
     }
 
     [[nodiscard]]
-    auto FromString(std::string_view level_str) noexcept -> Level {
-        std::array<char, 8> normalized{};
-        std::ranges::transform(level_str, normalized.begin(), [](unsigned char character) noexcept -> char {
-            return static_cast<char>(std::toupper(character));
-        });
-
-        const std::string_view name{ normalized.data(), level_str.size() };
-
-        for (const auto& [text, level] : table) {
-            if (name == text) {
-                return level;
+    constexpr auto FromString(std::string_view name) noexcept -> Level {
+        for (std::size_t index = 0; index < kNames.size(); ++index) {
+            if (std::ranges::equal(name, kNames[index], [](char lhs, char rhs) constexpr noexcept {
+                    const auto upper = (lhs >= 'a' && lhs <= 'z') ? static_cast<char>(lhs - ('a' - 'A')) : lhs;
+                    return upper == rhs;
+                })) {
+                return static_cast<Level>(index);
             }
         }
         return Level::OFF;

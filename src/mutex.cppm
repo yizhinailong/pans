@@ -12,13 +12,13 @@ export namespace pans {
 
     class SpinLock {
     public:
-        SpinLock()                           = default;
-        ~SpinLock()                          = default;
+        SpinLock() = default;
+        ~SpinLock() = default;
 
-        SpinLock(SpinLock const&)            = delete;
+        SpinLock(SpinLock const&) = delete;
         SpinLock& operator=(SpinLock const&) = delete;
-        SpinLock(SpinLock&&)                 = delete;
-        SpinLock& operator=(SpinLock&&)      = delete;
+        SpinLock(SpinLock&&) = delete;
+        SpinLock& operator=(SpinLock&&) = delete;
 
         auto lock() noexcept -> void {
             while (m_mutex.test_and_set(std::memory_order_acquire)) {
