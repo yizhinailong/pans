@@ -35,11 +35,18 @@ export namespace pans::log::level {
 
     [[nodiscard]]
     constexpr auto FromString(std::string_view name) noexcept -> Level {
+        constexpr auto EqualIgnoreCase = [](std::string_view lhs, std::string_view rhs) constexpr noexcept {
+            return std::ranges::equal(lhs, rhs, [](char lhs_char, char rhs_char) constexpr noexcept {
+                const auto upper =
+                    (lhs_char >= 'a' && lhs_char <= 'z') ?
+                    static_cast<char>(lhs_char - ('a' - 'A')) :
+                    lhs_char;
+                return upper == rhs_char;
+            });
+        };
+
         for (std::size_t index = 0; index < kNames.size(); ++index) {
-            if (std::ranges::equal(name, kNames[index], [](char lhs, char rhs) constexpr noexcept {
-                    const auto upper = (lhs >= 'a' && lhs <= 'z') ? static_cast<char>(lhs - ('a' - 'A')) : lhs;
-                    return upper == rhs;
-                })) {
+            if (EqualIgnoreCase(name, kNames[index])) {
                 return static_cast<Level>(index);
             }
         }
