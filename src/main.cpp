@@ -5,7 +5,9 @@ int main(int argc, char* argv[]) {
     std::println("Hello from pans!");
     std::println("Built with import std + std::println on modular C++23.");
     if (argc > 1) {
-        for (int i = 1; i < argc; ++i) std::println("  arg[{}] = {}", i, argv[i]);
+        for (int i = 1; i < argc; ++i) {
+            std::println("  arg[{}] = {}", i, argv[i]);
+        }
     }
     return 0;
 }
