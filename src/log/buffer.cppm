@@ -1,4 +1,4 @@
-export module log;
+export module log.buffer;
 
 import std;
 
