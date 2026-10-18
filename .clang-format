@@ -73,7 +73,7 @@ AlignConsecutiveTableGenDefinitionColons:
   EnumAssignments: false
   PadOperators: false
 AlignEscapedNewlines: DontAlign
-AlignOperands: AlignAfterOperator
+AlignOperands: DontAlign
 AlignTrailingComments:
   AlignPPAndNotPP: true
   Kind: Always
